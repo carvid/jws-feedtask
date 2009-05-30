@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="feedtask" default="compile" basedir=".">
+    <description>Builds and tests feedtask.</description>
+
+    <!-- ================ properties ================ -->
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+
+    <property name="src.home"       value="${basedir}/src"/>
+    <property name="build.home"     value="${basedir}/build"/>
+    <property name="dist.home"      value="${basedir}/dist"/>
+    <property name="test.home"      value="${basedir}/test"/>
+
+    <property name="compile.debug"          value="true"/>
+    <property name="compile.deprecation"    value="false"/>
+    <property name="compile.optimize"       value="true"/>
+    <property name="compile.lint"           value="unchecked"/>
+    <property name="compile.encoding"       value="UTF-8"/>
+
+    <property name="test.classes"   value="${build.home}/classes"/>
+    <property name="dist.name"      value="${ant.project.name}"/>
+
+    <!-- ================ init ================ -->
+
+    <target name="init">
+        <mkdir dir="${build.home}"/>
+    </target>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true" quiet="true">
+            <fileset dir="${build.home}"/>
+            <fileset dir="${dist.home}"/>
+        </delete>
+    </target>
+
+    <!-- ================ build ================ -->
+
+    <path id="compile.classpath">
+        <!-- Include this app lib directory -->
+        <fileset dir="${basedir}/lib">
+          <include name="*.jar"/>
+        </fileset>
+
+        <!-- jworksheet classes -->
+        <pathelement location="${jworksheet.home}/build/classes"/>
+        
+        <!-- unit tests -->
+        <pathelement location="${junit.junit.jar}"/>
+    </path>
+
+    <target name="compile" depends="prepare"
+        description="Compile Java sources">
+
+        <!-- Compile Java classes as necessary -->
+        <javac srcdir="${src.home}"
+              destdir="${build.home}/classes"
+                debug="${compile.debug}"
+          deprecation="${compile.deprecation}"
+             encoding="${compile.encoding}"
+             optimize="${compile.optimize}">
+            <classpath refid="compile.classpath"/>
+            <compilerarg value="-Xlint:${compile.lint}"/>
+        </javac>
+
+        <!-- Compile test classes -->
+        <javac srcdir="${test.home}"
+              destdir="${build.home}/classes"
+                debug="${compile.debug}"
+          deprecation="${compile.deprecation}"
+             encoding="${compile.encoding}"
+             optimize="${compile.optimize}">
+            <classpath refid="compile.classpath"/>
+            <compilerarg value="-Xlint:${compile.lint}"/>
+        </javac>
+
+        <!-- Copy application resources -->
+        <copy  todir="${build.home}/classes">
+            <fileset dir="${src.home}" excludes="**/*.java"/>
+        </copy>
+
+        <!-- Copy test resources -->
+        <copy  todir="${build.home}/classes">
+            <fileset dir="${test.home}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="prepare" >
+
+        <!-- Create build directories as needed -->
+        <mkdir  dir="${build.home}"/>
+        <mkdir  dir="${build.home}/classes"/>
+        <mkdir  dir="${build.home}/classes/META-INF"/>
+
+        <!-- Copy metafiles -->
+        <copy  todir="${build.home}/classes/META-INF">
+            <fileset dir="${basedir}">
+                <include name="**/*.mf" />
+                <include name="**/*.MF" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================ tests ================ -->
+
+    <target name="test" depends="compile"
+        description="Run all tests.">
+
+        <path id="test.classpath">
+            <path refid="compile.classpath"/>
+            <pathelement location="${test.classes}"/>
+        </path>
+
+        <junit fork="yes" haltonfailure="yes">
+            <batchtest fork="yes">
+                <fileset dir="${test.classes}">
+                    <include name="**/*Test.class" />
+                </fileset>
+            </batchtest>
+            <formatter type="plain" usefile="false" />
+            <classpath refid="test.classpath" />
+        </junit>
+    </target>
+
+    <!-- ============= distribution ============ -->
+
+    <target name="jar" depends="compile"
+        description="Creates a JAR file">
+
+        <mkdir dir="${dist.home}"/>
+
+        <jar destfile="${dist.home}/${dist.name}.jar"
+            basedir="${build.home}/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.openchronicles.jworksheet.module.feedtask.FeedTask"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
