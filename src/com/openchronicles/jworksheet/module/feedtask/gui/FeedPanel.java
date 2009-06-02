@@ -18,6 +18,14 @@
 
 package com.openchronicles.jworksheet.module.feedtask.gui;
 
+import net.ponec.jworksheet.core.ApplContext;
+import net.ponec.jworksheet.module.JwsContext;
+
+import javax.swing.ListSelectionModel;
+
+import net.ponec.jworksheet.gui.component.UjoTable;
+import net.ponec.jworksheet.gui.models.ProjectTableModel;
+
 /**
  *
  * @author Carlos David González Abraham 
@@ -25,9 +33,22 @@ package com.openchronicles.jworksheet.module.feedtask.gui;
  */
 public class FeedPanel extends javax.swing.JPanel {
 
+    // JWS components
+    private UjoTable projectTable;
+
     /** Creates new form FeedPanel */
-    public FeedPanel() {
+    public FeedPanel(JwsContext jwsContext) {
+
         initComponents();
+
+        // project UjoTable
+        projectTable = new UjoTable();
+        projectTable.enableSorting((ApplContext) jwsContext);
+        projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        projectTable.getModel().addTableModelListener((ApplContext) jwsContext);
+
+
+
     }
 
     /** This method is called from within the constructor to

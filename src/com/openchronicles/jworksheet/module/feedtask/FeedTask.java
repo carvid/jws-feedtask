@@ -44,7 +44,7 @@ public class FeedTask extends ModuleApiImpl {
             System.out.println(toString() + ": FINISH FeedTask");
         }
 
-        pFeed = new FeedPanel();
+        pFeed = new FeedPanel(getJwsContext());
         getJwsContext().getTabbedPane().addTab("Feeds", pFeed);
     }
 
