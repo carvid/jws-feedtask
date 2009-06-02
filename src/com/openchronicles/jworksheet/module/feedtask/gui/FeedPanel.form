@@ -156,6 +156,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="bSort">
                   <Properties>
+                    <Property name="text" type="java.lang.String" value="Sort" noResource="true"/>
                     <Property name="name" type="java.lang.String" value="bSort" noResource="true"/>
                   </Properties>
                   <Constraints>

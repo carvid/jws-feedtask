@@ -149,6 +149,7 @@ public class FeedPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
         pFeedButtons.add(bDelete, gridBagConstraints);
 
+        bSort.setText("Sort"); // NOI18N
         bSort.setName("bSort"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
