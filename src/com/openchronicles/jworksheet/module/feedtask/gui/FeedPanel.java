@@ -22,7 +22,11 @@ import net.ponec.jworksheet.core.ApplContext;
 import net.ponec.jworksheet.module.JwsContext;
 
 import javax.swing.ListSelectionModel;
-
+// JWS bo
+import net.ponec.jworksheet.bo.Project;
+import net.ponec.jworksheet.bo.Parameters;
+import net.ponec.jworksheet.bo.WorkSpace;
+// JWS gui
 import net.ponec.jworksheet.gui.component.UjoTable;
 import net.ponec.jworksheet.gui.models.ProjectTableModel;
 
@@ -34,19 +38,31 @@ import net.ponec.jworksheet.gui.models.ProjectTableModel;
 public class FeedPanel extends javax.swing.JPanel {
 
     // JWS components
+    private ApplContext applContext;
     private UjoTable projectTable;
 
     /** Creates new form FeedPanel */
     public FeedPanel(JwsContext jwsContext) {
 
-        initComponents();
+        applContext = (ApplContext) jwsContext;
 
         // project UjoTable
         projectTable = new UjoTable();
-        projectTable.enableSorting((ApplContext) jwsContext);
-        projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        projectTable.getModel().addTableModelListener((ApplContext) jwsContext);
 
+        initComponents();
+
+        projectTable.enableSorting(applContext);
+        projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        projectTable.getModel().addTableModelListener(applContext);
+
+        projectTable.getTableColumn(Project.P_ID  ).setMaxWidth(48);
+        projectTable.getTableColumn(Project.P_PRIVATE).setMaxWidth(58);
+        projectTable.getTableColumn(Project.P_DEFAULT).setMaxWidth(58);
+        projectTable.getTableColumn(Project.P_FINISHED ).setMaxWidth(58);
+        projectTable.showSortedColumn(Parameters.P_SORT_PROJ_COLUMN.of(jwsContext.getParameters()));
+
+        // fill project table
+        projectTable.getModel().setRows(WorkSpace.P_PROJS.getList(applContext.getWorkSpace()));
 
 
     }
@@ -64,7 +80,7 @@ public class FeedPanel extends javax.swing.JPanel {
         jSplitPane1 = new javax.swing.JSplitPane();
         pProjects = new javax.swing.JPanel();
         spProjects = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        $projectTable = projectTable;
         pFeeds = new javax.swing.JPanel();
         spFeeds = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -89,16 +105,9 @@ public class FeedPanel extends javax.swing.JPanel {
 
         spProjects.setName("spProjects"); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jTable2.setName("jTable2"); // NOI18N
-        spProjects.setViewportView(jTable2);
+        $projectTable.setModel(new ProjectTableModel(applContext));
+        $projectTable.setName("$projectTable"); // NOI18N
+        spProjects.setViewportView($projectTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -195,13 +204,13 @@ public class FeedPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable $projectTable;
     private javax.swing.JButton bCopy;
     private javax.swing.JButton bDelete;
     private javax.swing.JButton bNew;
     private javax.swing.JButton bSort;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JPanel pFeedButtons;
     private javax.swing.JPanel pFeeds;
     private javax.swing.JPanel pProjects;
