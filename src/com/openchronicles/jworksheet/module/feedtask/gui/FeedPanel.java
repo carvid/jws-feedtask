@@ -78,17 +78,22 @@ public class FeedPanel extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
+        pProjectFeeds = new javax.swing.JPanel();
+        jSplitPane2 = new javax.swing.JSplitPane();
         pProjects = new javax.swing.JPanel();
         spProjects = new javax.swing.JScrollPane();
         $projectTable = projectTable;
         pFeeds = new javax.swing.JPanel();
         spFeeds = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        $feedTable = new javax.swing.JTable();
         pFeedButtons = new javax.swing.JPanel();
-        bNew = new javax.swing.JButton();
-        bCopy = new javax.swing.JButton();
-        bDelete = new javax.swing.JButton();
-        bSort = new javax.swing.JButton();
+        bFeedNew = new javax.swing.JButton();
+        bFeedDelete = new javax.swing.JButton();
+        pItems = new javax.swing.JPanel();
+        spItems = new javax.swing.JScrollPane();
+        $itemTable = new javax.swing.JTable();
+        pItemButtons = new javax.swing.JPanel();
+        bItemImport = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         setMinimumSize(new java.awt.Dimension(540, 216));
@@ -99,6 +104,13 @@ public class FeedPanel extends javax.swing.JPanel {
         jSplitPane1.setResizeWeight(0.5);
         jSplitPane1.setName("jSplitPane1"); // NOI18N
         jSplitPane1.setOneTouchExpandable(true);
+
+        pProjectFeeds.setName("pProjectFeeds"); // NOI18N
+        pProjectFeeds.setLayout(new java.awt.BorderLayout());
+
+        jSplitPane2.setResizeWeight(0.5);
+        jSplitPane2.setName("jSplitPane2"); // NOI18N
+        jSplitPane2.setOneTouchExpandable(true);
 
         pProjects.setName("pProjects"); // NOI18N
         pProjects.setLayout(new java.awt.GridBagLayout());
@@ -118,26 +130,23 @@ public class FeedPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
         pProjects.add(spProjects, gridBagConstraints);
 
-        jSplitPane1.setTopComponent(pProjects);
+        jSplitPane2.setLeftComponent(pProjects);
 
         pFeeds.setName("pFeeds"); // NOI18N
         pFeeds.setLayout(new java.awt.GridBagLayout());
 
         spFeeds.setName("spFeeds"); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        $feedTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
 
             }
         ));
-        jTable1.setName("jTable1"); // NOI18N
-        spFeeds.setViewportView(jTable1);
+        $feedTable.setName("$feedTable"); // NOI18N
+        spFeeds.setViewportView($feedTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -148,46 +157,29 @@ public class FeedPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
         pFeeds.add(spFeeds, gridBagConstraints);
 
+        pFeedButtons.setName("pFeedButtons"); // NOI18N
+        pFeedButtons.setPreferredSize(new java.awt.Dimension(52, 116));
         pFeedButtons.setLayout(new java.awt.GridBagLayout());
 
-        bNew.setText("New"); // NOI18N
-        bNew.setName("bNew"); // NOI18N
+        bFeedNew.setText("New"); // NOI18N
+        bFeedNew.setName("bFeedNew"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
-        pFeedButtons.add(bNew, gridBagConstraints);
+        pFeedButtons.add(bFeedNew, gridBagConstraints);
 
-        bCopy.setText("Copy"); // NOI18N
-        bCopy.setName("bCopy"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
-        pFeedButtons.add(bCopy, gridBagConstraints);
-
-        bDelete.setText("Delete"); // NOI18N
-        bDelete.setName("bDelete"); // NOI18N
+        bFeedDelete.setText("Delete"); // NOI18N
+        bFeedDelete.setName("bFeedDelete"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
-        pFeedButtons.add(bDelete, gridBagConstraints);
-
-        bSort.setText("Sort"); // NOI18N
-        bSort.setName("bSort"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
-        pFeedButtons.add(bSort, gridBagConstraints);
+        pFeedButtons.add(bFeedDelete, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -197,24 +189,83 @@ public class FeedPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 5);
         pFeeds.add(pFeedButtons, gridBagConstraints);
 
-        jSplitPane1.setRightComponent(pFeeds);
+        jSplitPane2.setRightComponent(pFeeds);
+
+        pProjectFeeds.add(jSplitPane2, java.awt.BorderLayout.CENTER);
+
+        jSplitPane1.setTopComponent(pProjectFeeds);
+
+        pItems.setName("pItems"); // NOI18N
+        pItems.setLayout(new java.awt.GridBagLayout());
+
+        spItems.setName("spItems"); // NOI18N
+
+        $itemTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        $itemTable.setName("$itemTable"); // NOI18N
+        spItems.setViewportView($itemTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        pItems.add(spItems, gridBagConstraints);
+
+        pItemButtons.setLayout(new java.awt.GridBagLayout());
+
+        bItemImport.setText("Import"); // NOI18N
+        bItemImport.setName("bItemImport"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
+        pItemButtons.add(bItemImport, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 5);
+        pItems.add(pItemButtons, gridBagConstraints);
+
+        jSplitPane1.setRightComponent(pItems);
 
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable $feedTable;
+    private javax.swing.JTable $itemTable;
     private javax.swing.JTable $projectTable;
-    private javax.swing.JButton bCopy;
-    private javax.swing.JButton bDelete;
-    private javax.swing.JButton bNew;
-    private javax.swing.JButton bSort;
+    private javax.swing.JButton bFeedDelete;
+    private javax.swing.JButton bFeedNew;
+    private javax.swing.JButton bItemImport;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JPanel pFeedButtons;
     private javax.swing.JPanel pFeeds;
+    private javax.swing.JPanel pItemButtons;
+    private javax.swing.JPanel pItems;
+    private javax.swing.JPanel pProjectFeeds;
     private javax.swing.JPanel pProjects;
     private javax.swing.JScrollPane spFeeds;
+    private javax.swing.JScrollPane spItems;
     private javax.swing.JScrollPane spProjects;
     // End of variables declaration//GEN-END:variables
 
