@@ -18,15 +18,15 @@
 
 package com.openchronicles.jworksheet.module.feedtask.gui;
 
-import net.ponec.jworksheet.core.ApplContext;
-import net.ponec.jworksheet.module.JwsContext;
+import com.openchronicles.jworksheet.module.feedtask.gui.model.FeedTableModel;
 
 import javax.swing.ListSelectionModel;
-// JWS bo
+
 import net.ponec.jworksheet.bo.Project;
 import net.ponec.jworksheet.bo.Parameters;
 import net.ponec.jworksheet.bo.WorkSpace;
-// JWS gui
+import net.ponec.jworksheet.core.ApplContext;
+import net.ponec.jworksheet.module.JwsContext;
 import net.ponec.jworksheet.gui.component.UjoTable;
 import net.ponec.jworksheet.gui.models.ProjectTableModel;
 
@@ -39,32 +39,37 @@ public class FeedPanel extends javax.swing.JPanel {
 
     // JWS components
     private ApplContext applContext;
+    private JwsContext jwsContext;
     private UjoTable projectTable;
+    private UjoTable feedTable;
 
-    /** Creates new form FeedPanel */
     public FeedPanel(JwsContext jwsContext) {
 
-        applContext = (ApplContext) jwsContext;
+        this.jwsContext = jwsContext;
+        applContext     = (ApplContext) jwsContext;
 
-        // project UjoTable
         projectTable = new UjoTable();
+        feedTable    = new UjoTable();
 
         initComponents();
 
+        // project table
         projectTable.enableSorting(applContext);
         projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         projectTable.getModel().addTableModelListener(applContext);
-
         projectTable.getTableColumn(Project.P_ID  ).setMaxWidth(48);
         projectTable.getTableColumn(Project.P_PRIVATE).setMaxWidth(58);
         projectTable.getTableColumn(Project.P_DEFAULT).setMaxWidth(58);
         projectTable.getTableColumn(Project.P_FINISHED ).setMaxWidth(58);
         projectTable.showSortedColumn(Parameters.P_SORT_PROJ_COLUMN.of(jwsContext.getParameters()));
 
+        // feed table
+        feedTable.enableSorting(applContext);
+        feedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        feedTable.getModel().addTableModelListener(applContext);
+
         // fill project table
         projectTable.getModel().setRows(WorkSpace.P_PROJS.getList(applContext.getWorkSpace()));
-
-
     }
 
     /** This method is called from within the constructor to
@@ -85,7 +90,7 @@ public class FeedPanel extends javax.swing.JPanel {
         $projectTable = projectTable;
         pFeeds = new javax.swing.JPanel();
         spFeeds = new javax.swing.JScrollPane();
-        $feedTable = new javax.swing.JTable();
+        $feedTable = feedTable;
         pFeedButtons = new javax.swing.JPanel();
         bFeedNew = new javax.swing.JButton();
         bFeedDelete = new javax.swing.JButton();
@@ -137,14 +142,7 @@ public class FeedPanel extends javax.swing.JPanel {
 
         spFeeds.setName("spFeeds"); // NOI18N
 
-        $feedTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
+        $feedTable.setModel(new FeedTableModel(jwsContext));
         $feedTable.setName("$feedTable"); // NOI18N
         spFeeds.setViewportView($feedTable);
 
