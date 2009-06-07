@@ -18,6 +18,7 @@
 
 package com.openchronicles.jworksheet.module.feedtask.gui;
 
+import com.openchronicles.jworksheet.module.feedtask.bo.ProjectFeed;
 import com.openchronicles.jworksheet.module.feedtask.gui.model.FeedTableModel;
 
 import javax.swing.ListSelectionModel;
@@ -161,6 +162,11 @@ public class FeedPanel extends javax.swing.JPanel {
 
         bFeedNew.setText("New"); // NOI18N
         bFeedNew.setName("bFeedNew"); // NOI18N
+        bFeedNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bFeedNewActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -245,6 +251,13 @@ public class FeedPanel extends javax.swing.JPanel {
 
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bFeedNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFeedNewActionPerformed
+        ProjectFeed projectFeed = new ProjectFeed();
+
+        feedTable.getModel().addRow(projectFeed);
+        feedTable.selectRow(Integer.MAX_VALUE);
+    }//GEN-LAST:event_bFeedNewActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
