@@ -18,13 +18,21 @@
 
 package com.openchronicles.jworksheet.module.feedtask;
 
+import com.openchronicles.jworksheet.module.feedtask.bo.WorkSpace;
 import com.openchronicles.jworksheet.module.feedtask.gui.FeedPanel;
+
+import java.io.File;
+import java.io.IOException;
 
 import java.util.Calendar;
 import java.util.Date;
 
+import net.ponec.jworksheet.core.MessageException;
 import net.ponec.jworksheet.module.ModuleApiImpl;
 import net.ponec.jworksheet.module.JwsContext;
+import net.ponec.jworksheet.bo.Parameters;
+
+import org.ujoframework.core.UjoManagerXML;
 
 /**
  * 
@@ -32,6 +40,10 @@ import net.ponec.jworksheet.module.JwsContext;
  * &lt;<a href="mailto:carlosdavid@gonzalez-abraham.com.mx">carlosdavid@gonzalez-abraham.com.mx</a>&gt;
  */
 public class FeedTask extends ModuleApiImpl {
+
+    public static final String FILE_DATA = "data.feedtask.xml";
+
+    private WorkSpace workSpace;
 
     // GUI components
     private FeedPanel pFeed;
@@ -44,7 +56,7 @@ public class FeedTask extends ModuleApiImpl {
             System.out.println(toString() + ": FINISH FeedTask");
         }
 
-        pFeed = new FeedPanel(getJwsContext());
+        pFeed = new FeedPanel(this);
         getJwsContext().getTabbedPane().addTab("Feeds", pFeed);
     }
 
@@ -77,5 +89,27 @@ public class FeedTask extends ModuleApiImpl {
     /** Pring an summary information */
     public static void main(String[] args) {
         System.out.println(new FeedTask());
+    }
+
+    // -------------------------------------------------------------------------
+
+    public WorkSpace getWorkSpace() {
+        return workSpace;
+    }
+
+    public File getDataFile() {
+        File dataFile = Parameters.P_DATA_FILE_PATH.of(getJwsContext().getParameters());
+        if (dataFile == Parameters.P_DATA_FILE_PATH.getDefault()) {
+            dataFile = new File(getJwsContext().getConfigDir(), FILE_DATA);
+        }
+        return dataFile;
+    }
+
+    private void saveData() {
+        try {
+            UjoManagerXML.getInstance().saveXML(getDataFile(), workSpace, null, getJwsContext());
+        } catch (IOException e) {
+            throw new MessageException("Can't save: " + getDataFile(), e);
+        }
     }
 }
