@@ -51,8 +51,10 @@ public class FeedTask extends ModuleApiImpl {
     // -- Module Api Implementation
     public void eventListener(boolean start) {
         if (start) {
+            loadData();
             System.out.println(toString() + ": START FeedTask");
         } else {
+            saveData();
             System.out.println(toString() + ": FINISH FeedTask");
         }
 
@@ -97,19 +99,40 @@ public class FeedTask extends ModuleApiImpl {
         return workSpace;
     }
 
-    public File getDataFile() {
-        File dataFile = Parameters.P_DATA_FILE_PATH.of(getJwsContext().getParameters());
+    private File getDataFile() {
+        File dataFile = Parameters
+            .P_DATA_FILE_PATH.of(getJwsContext().getParameters())
+        ;
         if (dataFile == Parameters.P_DATA_FILE_PATH.getDefault()) {
             dataFile = new File(getJwsContext().getConfigDir(), FILE_DATA);
         }
+
         return dataFile;
     }
 
     private void saveData() {
         try {
-            UjoManagerXML.getInstance().saveXML(getDataFile(), workSpace, null, getJwsContext());
+            UjoManagerXML.getInstance()
+                .saveXML(getDataFile(), workSpace, null, getJwsContext())
+            ;
         } catch (IOException e) {
             throw new MessageException("Can't save: " + getDataFile(), e);
+        }
+    }
+
+    private void loadData() {
+        File dataFile = getDataFile();
+
+        if (dataFile.isFile() &&  (dataFile.length() > 0)) {
+            try {
+                workSpace  = (WorkSpace) UjoManagerXML.getInstance()
+                    .parseXML (getDataFile(), WorkSpace.class, "Data Loading")
+                ;
+            } catch (Throwable e) {
+                throw new MessageException("Can't load file: " + dataFile, e);
+            }
+        } else {
+            workSpace = new WorkSpace();
         }
     }
 }
