@@ -22,7 +22,12 @@ import com.openchronicles.jworksheet.module.feedtask.FeedTask;
 import com.openchronicles.jworksheet.module.feedtask.bo.ProjectFeed;
 import com.openchronicles.jworksheet.module.feedtask.gui.model.FeedTableModel;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 import net.ponec.jworksheet.bo.Project;
 import net.ponec.jworksheet.bo.Parameters;
@@ -39,6 +44,7 @@ import net.ponec.jworksheet.gui.models.ProjectTableModel;
  */
 public class FeedPanel extends javax.swing.JPanel {
 
+    private FeedTask feedTask;
     // JWS components
     private ApplContext applContext;
     private JwsContext jwsContext;
@@ -47,6 +53,7 @@ public class FeedPanel extends javax.swing.JPanel {
 
     public FeedPanel(FeedTask feedTask) {
 
+        this.feedTask = feedTask;
         jwsContext  = feedTask.getJwsContext();
         applContext = (ApplContext) jwsContext;
 
@@ -65,6 +72,13 @@ public class FeedPanel extends javax.swing.JPanel {
         projectTable.getTableColumn(Project.P_FINISHED ).setMaxWidth(58);
         projectTable.showSortedColumn(Parameters.P_SORT_PROJ_COLUMN.of(jwsContext.getParameters()));
 
+        projectTable.getSelectionModel().addListSelectionListener (
+            new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent e) {
+                    updateFeedTable();
+                }
+        });
+
         // feed table
         feedTable.enableSorting(applContext);
         feedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -72,6 +86,37 @@ public class FeedPanel extends javax.swing.JPanel {
 
         // fill project table
         projectTable.getModel().setRows(WorkSpace.P_PROJS.getList(applContext.getWorkSpace()));
+
+        List<ProjectFeed> feeds = com.openchronicles.jworksheet.module.feedtask.bo
+            .WorkSpace.FEEDS.getList(feedTask.getWorkSpace())
+        ;
+        feedTable.getModel().setRows(feeds);
+    }
+
+    private void updateFeedTable() {
+
+        Project project = getSelectedProject();
+
+        Integer projectId = project != null
+            ? projectId = Project.P_ID.of(project)
+            : null
+        ;
+        List<ProjectFeed> feeds = projectId != null
+            ? feedTask.getWorkSpace().findFeedsByProject(projectId)
+            : new ArrayList<ProjectFeed>()
+        ;
+        feedTable.getModel().setRows(feeds);
+        feedTable.selectRow(0);
+        //feedTable.showSortedColumn(TaskType.P_ID);
+    }
+
+    private Project getSelectedProject() {
+        int row = projectTable.getSelectedRow();
+
+        return row >= 0
+            ? (Project) projectTable.getModel().getRowNullable(row)
+            : null
+        ;
     }
 
     /** This method is called from within the constructor to
@@ -255,6 +300,13 @@ public class FeedPanel extends javax.swing.JPanel {
 
     private void bFeedNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFeedNewActionPerformed
         ProjectFeed projectFeed = new ProjectFeed();
+        Project project = getSelectedProject();
+
+        ProjectFeed.PROJ_ID.setValue(projectFeed, Project.P_ID.of(project));
+
+        com.openchronicles.jworksheet.module.feedtask.bo.WorkSpace.FEEDS
+            .addItem(feedTask.getWorkSpace(), projectFeed)
+        ;
 
         feedTable.getModel().addRow(projectFeed);
         feedTable.selectRow(Integer.MAX_VALUE);

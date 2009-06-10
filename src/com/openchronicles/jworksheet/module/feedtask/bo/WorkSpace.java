@@ -22,6 +22,9 @@ import org.ujoframework.UjoProperty;
 import org.ujoframework.implementation.map.MapUjo;
 import org.ujoframework.extensions.ListProperty;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  *
  * @author Carlos David González Abraham
@@ -30,4 +33,17 @@ import org.ujoframework.extensions.ListProperty;
 public class WorkSpace extends MapUjo {
 
     public static final ListProperty<WorkSpace,ProjectFeed> FEEDS
-        = newPropertyList("ProjectFeed", ProjectFeed.class);}
+        = newPropertyList("ProjectFeed", ProjectFeed.class);
+
+    public List<ProjectFeed> findFeedsByProject(Integer projectId) {
+        List<ProjectFeed> feeds = new ArrayList<ProjectFeed>();
+
+        for (ProjectFeed feed : FEEDS.getList(this)) {
+            if (ProjectFeed.PROJ_ID.of(feed).equals(projectId)) {
+                feeds.add(feed);
+            }
+        }
+
+        return feeds;
+    }
+}
