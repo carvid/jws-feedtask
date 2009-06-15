@@ -18,7 +18,7 @@
 
 package com.openchronicles.jworksheet.module.feedtask.gui;
 
-import com.openchronicles.jworksheet.module.feedtask.FeedTask;
+import com.openchronicles.jworksheet.module.feedtask.core.FeedTaskModule;
 import com.openchronicles.jworksheet.module.feedtask.bo.ProjectFeed;
 import com.openchronicles.jworksheet.module.feedtask.gui.model.FeedTableModel;
 
@@ -44,14 +44,14 @@ import net.ponec.jworksheet.gui.models.ProjectTableModel;
  */
 public class FeedPanel extends javax.swing.JPanel {
 
-    private FeedTask feedTask;
+    private FeedTaskModule feedTask;
     // JWS components
     private ApplContext applContext;
     private JwsContext jwsContext;
     private UjoTable projectTable;
     private UjoTable feedTable;
 
-    public FeedPanel(FeedTask feedTask) {
+    public FeedPanel(FeedTaskModule feedTask) {
 
         this.feedTask = feedTask;
         jwsContext  = feedTask.getJwsContext();

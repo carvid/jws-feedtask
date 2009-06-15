@@ -132,7 +132,7 @@
         <jar destfile="${dist.home}/${dist.name}.jar"
             basedir="${build.home}/classes">
             <manifest>
-                <attribute name="Main-Class" value="com.openchronicles.jworksheet.module.feedtask.FeedTask"/>
+                <attribute name="Main-Class" value="com.openchronicles.jworksheet.module.feedtask.core.FeedTaskModule"/>
             </manifest>
         </jar>
     </target>

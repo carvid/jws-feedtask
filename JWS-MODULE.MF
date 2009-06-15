@@ -1,2 +1,2 @@
-Main-Class: com.openchronicles.jworksheet.module.feedtask.FeedTask
+Main-Class: com.openchronicles.jworksheet.module.feedtask.core.FeedTaskModule
 

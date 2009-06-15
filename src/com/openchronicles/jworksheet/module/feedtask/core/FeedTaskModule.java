@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.openchronicles.jworksheet.module.feedtask;
+package com.openchronicles.jworksheet.module.feedtask.core;
 
 import com.openchronicles.jworksheet.module.feedtask.bo.WorkSpace;
 import com.openchronicles.jworksheet.module.feedtask.gui.FeedPanel;
@@ -39,7 +39,7 @@ import org.ujoframework.core.UjoManagerXML;
  * @author Carlos David González Abraham 
  * &lt;<a href="mailto:carlosdavid@gonzalez-abraham.com.mx">carlosdavid@gonzalez-abraham.com.mx</a>&gt;
  */
-public class FeedTask extends ModuleApiImpl {
+public class FeedTaskModule extends ModuleApiImpl {
 
     public static final String FILE_DATA = "data.feedtask.xml";
 
@@ -90,7 +90,7 @@ public class FeedTask extends ModuleApiImpl {
 
     /** Pring an summary information */
     public static void main(String[] args) {
-        System.out.println(new FeedTask());
+        System.out.println(new FeedTaskModule());
     }
 
     // -------------------------------------------------------------------------
